@@ -1,4 +1,4 @@
-import { PaginationComponent } from "@/components/pagination-component";
+import { PaginationWithLinks } from "@/components/pagination-with-links";
 import { Search } from "@/components/search";
 import { getPosts } from "@/service/post.action";
 
@@ -10,7 +10,7 @@ interface SearchParamsProps {
 }
 
 const Home = async ({ searchParams }: SearchParamsProps) => {
-  const search = searchParams;
+  const search =await searchParams;
   const query = search?.query ?? "";
   const currentPage = Number(search?.page) || 1;
   const { type, data, pagination } = await getPosts(query, currentPage);
@@ -26,9 +26,15 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
           </div>
         ))}
       </div>
-      <div className="text-black">
-        <PaginationComponent pageCount={pagination?.last_page} />
-      
+      <div>
+        <PaginationWithLinks
+          page={currentPage}
+          pageSize={pagination.per_page}
+          totalCount={pagination.total}
+          pageSizeSelectOptions={{
+            pageSizeOptions: [5, 10, 25, 50],
+          }}
+        />
       </div>
     </div>
   );
