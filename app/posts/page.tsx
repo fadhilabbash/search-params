@@ -1,6 +1,8 @@
+import { getPosts } from "@/service/post.action";
+import { columns } from "./columns";
+import { DataTable } from "../../components/common/data-table";
 import { PaginationWithLinks } from "@/components/common/pagination-with-links";
 import { Search } from "@/components/common/search";
-import { getPosts } from "@/service/post.action";
 
 interface SearchParamsProps {
   searchParams?: {
@@ -9,22 +11,21 @@ interface SearchParamsProps {
   };
 }
 
-const Home = async ({ searchParams }: SearchParamsProps) => {
+const Posts = async ({ searchParams }: SearchParamsProps) => {
   const search = await searchParams;
   const query = search?.query ?? "";
   const currentPage = Number(search?.page) || 1;
   const { type, data, pagination } = await getPosts(query, currentPage);
 
   if (!data) return null;
+
   return (
-    <div className="grid grid-cols-1 gap-4 p-4">
-      <Search />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data.map((item: any) => (
-          <div key={item.id} className="leading-8 text-pink-500 border p-2">
-            {item.title || "Video Summary"}
-          </div>
-        ))}
+    <div className="container grid grid-cols-1 gap-4 p-4 mx-auto py-8">
+      <div>
+        <Search />
+      </div>
+      <div>
+        <DataTable columns={columns} data={data} />
       </div>
       <div>
         <PaginationWithLinks
@@ -39,4 +40,4 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
     </div>
   );
 };
-export default Home;
+export default Posts;

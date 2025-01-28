@@ -1,10 +1,18 @@
-'use client';
+"use client";
 
-import { type ReactNode, useCallback } from 'react';
+import { type ReactNode, useCallback } from "react";
 
-import { usePathname, useSearchParams } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { PaginationItem, PaginationLink, PaginationEllipsis, Pagination, PaginationContent, PaginationPrevious, PaginationNext } from './ui/pagination';
+import { usePathname, useSearchParams } from "next/navigation";
+import { cn } from "@/lib/utils";
+import {
+  PaginationItem,
+  PaginationLink,
+  PaginationEllipsis,
+  Pagination,
+  PaginationContent,
+  PaginationPrevious,
+  PaginationNext,
+} from "../ui/pagination";
 
 export interface PaginationWithLinksProps {
   pageSizeSelectOptions?: {
@@ -43,7 +51,7 @@ export function PaginationWithLinks({
 
   const buildLink = useCallback(
     (newPage: number) => {
-      const key = pageSearchParam || 'page';
+      const key = pageSearchParam || "page";
       if (!searchParams) return `${pathname}?${key}=${newPage}`;
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set(key, String(newPage));
@@ -51,7 +59,6 @@ export function PaginationWithLinks({
     },
     [searchParams, pathname]
   );
-
 
   const renderPageNumbers = () => {
     const items: ReactNode[] = [];
@@ -78,7 +85,7 @@ export function PaginationWithLinks({
 
       if (page > 3) {
         items.push(
-          <PaginationItem key='ellipsis-start'>
+          <PaginationItem key="ellipsis-start">
             <PaginationEllipsis />
           </PaginationItem>
         );
@@ -99,7 +106,7 @@ export function PaginationWithLinks({
 
       if (page < totalPageCount - 2) {
         items.push(
-          <PaginationItem key='ellipsis-end'>
+          <PaginationItem key="ellipsis-end">
             <PaginationEllipsis />
           </PaginationItem>
         );
@@ -121,33 +128,32 @@ export function PaginationWithLinks({
   };
 
   return (
-      <Pagination className={cn({ 'md:justify-center': pageSizeSelectOptions })}>
-        <PaginationContent className='max-sm:gap-0'>
-          <PaginationItem>
-            <PaginationPrevious
-              href={buildLink(Math.max(page - 1, 1))}
-              aria-disabled={page === 1}
-              tabIndex={page === 1 ? -1 : undefined}
-              className={
-                page === 1 ? 'pointer-events-none opacity-50' : undefined
-              }
-            />
-          </PaginationItem>
-          {renderPageNumbers()}
-          <PaginationItem>
-            <PaginationNext
-              href={buildLink(Math.min(page + 1, totalPageCount))}
-              aria-disabled={page === totalPageCount}
-              tabIndex={page === totalPageCount ? -1 : undefined}
-              className={
-                page === totalPageCount
-                  ? 'pointer-events-none opacity-50'
-                  : undefined
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-  
+    <Pagination className={cn({ "md:justify-center": pageSizeSelectOptions })}>
+      <PaginationContent className="max-sm:gap-0">
+        <PaginationItem>
+          <PaginationPrevious
+            href={buildLink(Math.max(page - 1, 1))}
+            aria-disabled={page === 1}
+            tabIndex={page === 1 ? -1 : undefined}
+            className={
+              page === 1 ? "pointer-events-none opacity-50" : undefined
+            }
+          />
+        </PaginationItem>
+        {renderPageNumbers()}
+        <PaginationItem>
+          <PaginationNext
+            href={buildLink(Math.min(page + 1, totalPageCount))}
+            aria-disabled={page === totalPageCount}
+            tabIndex={page === totalPageCount ? -1 : undefined}
+            className={
+              page === totalPageCount
+                ? "pointer-events-none opacity-50"
+                : undefined
+            }
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 }

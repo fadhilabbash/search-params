@@ -24,7 +24,7 @@ export function Search() {
   return (
     <div>
       <input
-      className="w-full border"
+      className="w-full border p-2.5 rounded-md"
         type="text"
         placeholder="Search"
         onChange={(e) => handleSearch(e.target.value)}
