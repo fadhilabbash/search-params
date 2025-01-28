@@ -1,6 +1,7 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import { Input } from "../ui/input";
 
 export function Search() {
   const searchParams = useSearchParams();
@@ -23,13 +24,12 @@ export function Search() {
 
   return (
     <div>
-      <input
-      className="w-full border p-2.5 rounded-md"
-        type="text"
-        placeholder="Search"
-        onChange={(e) => handleSearch(e.target.value)}
+       <Input
+          placeholder="ادخل كلمة للبحث عنها."
+          onChange={(e) => handleSearch(e.target.value)}
         defaultValue={searchParams.get("query")?.toString()}
-      />
+          className="max-w-sm"
+        />
     </div>
   );
 }

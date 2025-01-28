@@ -1,8 +1,7 @@
-import { getPosts } from "@/service/post.action";
-import { columns } from "./columns";
+import { getPosts } from "@/service/actions/post.action";
+import { columns, Post } from "./columns";
 import { DataTable } from "../../components/common/data-table";
 import { PaginationWithLinks } from "@/components/common/pagination-with-links";
-import { Search } from "@/components/common/search";
 
 interface SearchParamsProps {
   searchParams?: {
@@ -15,23 +14,20 @@ const Posts = async ({ searchParams }: SearchParamsProps) => {
   const search = await searchParams;
   const query = search?.query ?? "";
   const currentPage = Number(search?.page) || 1;
-  const { type, data, pagination } = await getPosts(query, currentPage);
+  const res = await getPosts(currentPage, query);
 
-  if (!data) return null;
+  if (res.type === "error") return null;
 
   return (
     <div className="container grid grid-cols-1 gap-4 p-4 mx-auto py-8">
       <div>
-        <Search />
-      </div>
-      <div>
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={res.data as Post[]} />
       </div>
       <div>
         <PaginationWithLinks
           page={currentPage}
-          pageSize={pagination.per_page}
-          totalCount={pagination.total}
+          pageSize={res.pagination ? res.pagination.per_page : 0}
+          totalCount={res.pagination ? res.pagination.total : 0}
           pageSizeSelectOptions={{
             pageSizeOptions: [5, 10, 25, 50],
           }}

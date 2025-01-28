@@ -1,6 +1,6 @@
 import { PaginationWithLinks } from "@/components/common/pagination-with-links";
 import { Search } from "@/components/common/search";
-import { getPosts } from "@/service/post.action";
+import { getPosts } from "@/service/actions/post.action";
 
 interface SearchParamsProps {
   searchParams?: {
